@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>前端性能优化</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h2>前端性能优化</h2>
+<p>从一个老生常谈的面试题开始：</p>
+<blockquote>
+<p>浏览器地址从输入URL到页面加载完成，经历了什么</p>
+</blockquote>
+<p>首先按顺序说明一下从输入URL到页面显示可能做的事：</p>
+<ul>
+<li>1.DNS解析：将对应域名解析成服务器的ip地址和端口号</li>
+<li>2.建立TCP网络连接：和ip地址对应的服务器建立TCP网络连接</li>
+<li>3.发送HTTP请求：客户端向服务发送HTTP请求，获取需要的资源</li>
+<li>4.处理HTTP请求：服务端接受到HTTP请求，处理相应的请求，将资源放到响应体中返回给客户端</li>
+<li>5.获取数据，渲染页面：客户端获取到数据，解析响应内容，把解析结果展示给用户</li>
+</ul>
+<p>接下来性能优化就是针对上面这五个过程分解，每个过程进行优化。</br></p>
+<p>对于前两个过程的优化，很遗憾我们所做的微乎其微，在这里就不谈了。剩下的三个过程优化我大致列了一个思维脑图。</p>
+<p><img src="./menu.png" /></p>
+<h3>网络层面优化</h3>
+<p>从上面的思维脑图我们可以看出，网络层面的优化可以从两方面入手：</p>
+<ul>
+<li>减小单次请求文件的大小</li>
+<li>减少请求次数</li>
+</ul>
+<blockquote>
+<p>减小单次请求文件的大小</p>
+</blockquote>
+<p>压缩文件在利用webpack前端工程化中已经帮我们做好了，我们在这里优化的点是怎么减小打包过后体积比较大的内容。在这里为大家推荐一个非常好用的包组成可视化工具--<a href="https://www.npmjs.com/package/webpack-bundle-analyzer">webpack-bundle-analyzer</a></br></p>
+<p><img src="./show-size.png" /></p>
+<p>减小压缩后体积的方法：</p>
+<ul>
+<li>1. 如使用组件库，尽量按需加载
+<img src="./show-size2.png" /></li>
+<li>2. 删除冗余代码（Tree-Shaking）</li>
+</ul>
+<blockquote>
+<p>减少请求次数</p>
+</blockquote>
+<p>我们可以合理的使用缓存来减少请求次数。对于我们来说http缓存是我们最为熟悉的。</p>
+<blockquote>
+<p>http缓存机制</p>
+</blockquote>
+<p><img src="./http-cache-xmind.png" /></p>
+<blockquote>
+<p>http缓存决策</p>
+</blockquote>
+<p><img src="./http-cache.png" /></p>
+<p>当资源内容不可复用时，直接为cache-control设置为no-store,拒绝一切缓存；否则考虑是否每次都需要向服务器进行缓存的有效确认，如果需要，那么设置cache-control为no-cache; 否则考虑资源是否可以被代理服务器缓存，根据实际需要是设置为private还是public; 然后考虑资源的过期时间，设置对应的max-age; 最后配置协商缓存需要的Etag和Last-Modified。</p>
+<h3>渲染层面</h3>
+<p>这部分的内容是获取资源后浏览器展现内容方面的优化</p>
+<blockquote>
+<p>服务端渲染</p>
+</blockquote>
+<p><img src="./server-render.png" /></p>
+<p><img src="./client-render.png" /></p>
+<ul>
+<li>客户端渲染：浏览器执行一遍js，生成对应的dom节点；然后页面才呈现在用户面前</li>
+<li>服务端渲染：后端把页面内容转化成HTML字符串返回给客户端，客户端拿到手就可以直接渲染呈现给用户</li>
+</ul>
+<p>服务端渲染的优点：</p>
+<ul>
+<li>加快首屏渲染速度</li>
+<li>利于SEO</li>
+</ul>
+<p>服务端渲染的缺点：</p>
+<ul>
+<li>比较吃服务器资源</li>
+</ul>
+<blockquote>
+<p>浏览器背后的运行机制</p>
+</blockquote>
+<p>浏览器的内核分为两部分：</p>
+<ul>
+<li>
+渲染引擎：
+<ul>
+<li>HTML解释器</li>
+<li>CSS解释器</li>
+<li>布局</li>
+<li>网络</li>
+<li>存储</li>
+<li>图形</li>
+<li>音视频</li>
+<li>图片解码器</li>
+</ul>
+</li>
+<li>JS引擎</li>
+</ul>
+<blockquote>
+<p>浏览器渲染过程</p>
+</blockquote>
+<p>浏览器的渲染过程，简单来说就是渲染引擎根据HTML文件描述构建相应的数学模型，然后调用浏览器相应零部件将网页资源代码转换成图像的结果，如下图所示：</p>
+<p><img src="./render1.png" /></p>
+<p>在渲染过程中各个模块相互协作，下面列举我们比较关注的功能模块功能：</p>
+<ul>
+<li>HTML解释器：将HTML文件经过词法分析输出DOM树</li>
+<li>CSS解释器：解析CSS文件生成样式规则</li>
+<li>图层布局计算模块：布局计算每个节点的精确位置和大小</li>
+<li>视图绘制模块：进行具体节点的图像绘制，将像素渲染到屏幕上</li>
+<li>JavaScript引擎：编译执行JavaScript代码</li>
+</ul>
+<blockquote>
+<blockquote>
+<p>渲染过程解析</p>
+</blockquote>
+</blockquote>
+<p>每个页面的首次渲染都经历如下阶段（下面每一个过程有可能是同步进行的）：</p>
+<p><img src="./render2.png" /></p>
+<ul>
+<li>解析HTML：在这一步浏览器执行了所有的加载解析逻辑，在解析HTML的过程中发出页面渲染所需的各种外部资源请求</li>
+<li>计算样式：浏览器加载并解析所有的样式信息与DOM树合并，生成最终的render树(::after, ::before这样的伪元素会被构建到DOM树中)</li>
+<li>计算图层布局：计算页面中所有元素的相对位置信息，大小等</li>
+<li>绘制图层：这一步浏览器会根据上面的结果把每一个图层转换为像素，并对所有的媒体文件进行解码</li>
+<li>整合图层，得到页面：浏览器会合并各个图层，将数据由CPU输出给GPU最终绘制在屏幕上。</li>
+</ul>
+<h4>渲染过程抽象成树</h4>
+<p>为了便于理解和记忆可以把渲染过程抽象成下面几颗重要的树：</p>
+<p><img src="./render3.png" /></p>
+<ul>
+<li>DOM树：解析HTML创建出DOM树；</li>
+<li>CSS树：解析所有的css(包括外部的css文件和样式元素)创建出css树，css的解析过程和DOM的解析过程是<code>并行的</code></li>
+<li>render树：DOM树和CSS树结合得到render树</li>
+<li>布局渲染树：递归遍历render树，计算每一个节点的大小、所在页面的精确位置等得到布局渲染树</li>
+<li>绘制渲染树：遍历布局渲染树绘制每个节点</li>
+</ul>
+<p>总结一下：浏览器的渲染过程，首先基于HTML构建DOM树，这棵DOM树与解析css生成的CSS树合并生成渲染树，通过布局和计算生成布局渲染树，浏览器以布局渲染树为基本去布局和绘制图像。</p>
+<blockquote>
+<p>基于渲染过程的CSS优化</p>
+</blockquote>
+<p>看如下css代码：</p>
+<pre><code>#myList li {
+    float: left;
+}
+</code></pre>
+
+<p>大家在写的过程会本能的以为浏览器寻找起来并不困难，因为#myList是一个id选择器对应的元素应该只有一个，查找起来很简单，定位到#myList元素等于缩小了范围之后再去查找它后代中的li元素就比较简单了。但是，事实上<code>CSS选择符是从右到左进行匹配的</code>，也就是浏览器先遍历页面中的每一个li元素，然后再去确认它的父级有没有#myList，所以上面这种写法性能就比较差了。</br>
+下面就总结基于css的性能提升方案：
+- 避免使用通配符，只对需要用到的元素进行选择
+- 了解可以被继承实现的属性，避免重复匹配重复定义
+- 少用标签选择器，尽量使用类选择器。
+- 减少嵌套，尽量将深度降到最低。</p>
+<blockquote>
+<p>CSS和JS加载顺序优化</p>
+</blockquote>
+<p><code>CSS</code>和<code>JS</code>都会阻塞上面所说的渲染过程。</p>
+<h4>CSS的阻塞</h4>
+<p>在上面说明浏览器渲染过程时，提到渲染树是有DOM树和CSS树合力生成的；所以即便DOM已经解析完成，只要CSS树没有完成，用户还是见不到页面的。因此我们可以得出以下优化方案：
+- 尽早加载CSS，就是我们现在常做的将CSS相关放在head标签中
+- 尽快加载CSS，比如加载外部CSS时，使用CDN加快加载速度</p>
+<h4>JS阻塞</h4>
+<p>我们一起来看下面的例子：</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;&gt;
+    &lt;title&gt;JS阻塞&lt;/title&gt;
+    &lt;style&gt;
+        #jsContent {
+            background-color: rgb(255, 255, 0);
+        }
+    &lt;/style&gt;
+    &lt;script src=&quot;./headIndex.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;jsContent&quot;&gt;&lt;/div&gt;
+    &lt;script src=&quot;./bodyIndex.js&quot;&gt;&lt;/script&gt;
+    &lt;style&gt;
+        #jsContent {
+            background-color: rgb(0, 255, 255);
+        }
+    &lt;/style&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+// headIndex.js
+console.log('head标签内：', document.querySelector('#jsContent'));
+// bodyIndex.js
+const dom = document.querySelector('#jsContent');
+console.log('body标签内：', dom);
+console.log('背景颜色：', window.getComputedStyle(dom).backgroundColor);
+</code></pre>
+
+<p>输出结果：</p>
+<p><img src="./console1.png" /></p>
+<p>从结果来看js阻塞了DOM树和CSS树的生成，也就阻塞了页面渲染，为了避免不必要的js阻塞，我们可以使用async和defer来进行优化：</p>
+<ul>
+<li>async: async模式下不会阻塞浏览器做其他事情，异步加载js，加载结束后立即执行</li>
+<li>defer: defer模式下也不会阻塞浏览器做其他事前，异步加载js，等整个文档解析完成、DOMContentLoaded事件即将被触发时，defer标记的js才开始执行</li>
+</ul>
+<p>或者像我们平常做的一样将js放在body最后去引用</p>
+<blockquote>
+<p>DOM操作优化</p>
+</blockquote>
+<p>雅虎军规中很重要的一条就是：<code>尽量减少DOM访问</code>；那么为什么DOM会这么慢呢？因为收了&quot;过路费&quot;;</p>
+<blockquote>
+<blockquote>
+<p>把DOM和JavaScript各自想象成一个岛屿，它们之间用收费桥梁连接。---《高性能JavaScript》</p>
+</blockquote>
+</blockquote>
+<p>当我们每访问一次DOM时都会过一次桥，当操作次数过多时就会产生明显的性能问题。</p>
+<h4>修改DOM引发的样式变化</h4>
+<p>过桥很慢，到了桥对岸更改操作带来的结果也很慢。很多时候我们对DOM的操作不局限于访问，而是修改它，引发外观上的改变触发回流或重绘。本质上就是我们对dom树的改变造成渲染树的改变所致。</p>
+<ul>
+<li>回流：当我们对DOM的修改引发DOM的几何尺寸或位置改变时，浏览器会重新计算元素的几何属性，然后再将计算结果绘制出来，这个过程就叫做回流。</li>
+<li>重绘：当我们的修改导致了DOM元素的样式修改时(比如修改了字体颜色或者背景色)，并未造成元素的几何属性改变时，浏览器不需要重新计算元素的几何属性，直接为元素绘制样式，这个过程就叫做重绘。</li>
+</ul>
+<h4>优化DOM：减少DOM操作、避免过度渲染</h4>
+<p>我们一起来看一个例子：</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;&gt;
+  &lt;title&gt;DOM操作测试&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id=&quot;jsContainer&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>此时假如有个需求：想要在jsContainer里面写1000句一样的话。可以这样做：</p>
+<pre><code>for(let count = 0; count &lt; 1000; count++) {
+    document.getElementById('jsContainer').innerHTML += '&lt;span&gt;这是一个测试&lt;/span&gt;';
+}
+</code></pre>
+
+<p>大家看到这段代码，会发现有两个明显的优化点：</p>
+<ul>
+<li>
+<p>第一访问太多次dom了，每一次循环都访问了一次jsContainer元素，总共访问了1000次，其实可以用个变量缓存下来，只访问一次</p>
+<p>const dom = document.getElementById('jsContainer');
+for(let count = 0; count &lt; 1000; count++) {
+    dom.innerHTML += '<span>这是一个测试</span>';
+}</p>
+</li>
+<li>
+<p>第二不必要的dom更改太多了，在这1000次循环中修改了1000次dom树，从而造成了1000次回流或重绘，这是很影响性能。其实我们可以只改变一次dom树：</p>
+<p>const dom = document.getElementById('jsContainer');
+let content = '';
+for(let count = 0; count &lt; 1000; count++) {
+    content += '<span>这是一个测试</span>'
+}
+dom.innerHTML = content;</p>
+</li>
+</ul>
+<p>从上面我们可以看出减少DOM操作的核心思路就是让<code>JS去给DOM分压</code></p>
+<h4>优化DOM：异步更新策略</h4>
+<p>Vue内部就是利用异步更新实现DOM的优化。在介绍异步更新之前先介绍一下EVent Loop和渲染时机</p>
+<blockquote>
+<p>Event Loop和渲染时机</p>
+</blockquote>
+<p>Event Loop分为两种：</p>
+<ul>
+<li>Macro-Task(宏任务)：常见的宏任务有setTimeout、setInterval、setImmediate、script(整体代码)</li>
+<li>Micro-Task(微任务)：常见的微任务有Promise</li>
+</ul>
+<p>一个完整Event Loop过程可以概括为以下阶段：</p>
+<ul>
+<li>初始状态：调用栈为空。只有一个script脚本</li>
+<li>script脚本被推入到调用栈，执行同步代码。在执行过程中可能会产生宏任务与微任务，它们会被分别推入到对应的任务队列里，当所有的同步代码执行完毕之后，script脚本移出宏队列</li>
+<li>如果微任务队列不为空，按推入顺序依次执行，直到执行完所有的微任务。</li>
+<li><code>执行渲染操作，更新界面</code></li>
+<li>检查是否存在Web worker任务，如果有的话进行处理
+（上述过程循环往复，直到两个队列都为空）
+总结一下，每次循环都是下面这样一个过程：</li>
+</ul>
+<p><img src="./render4.png" /></p>
+<p>通过上面的事件循环过程我们可以知道异步更新DOM的最佳时机应该在微任务队列中。那么为什么使用异步更新呢？</p>
+<blockquote>
+<p>异步更新的好处</p>
+</blockquote>
+<p>因为异步更新只考虑结果，不会为过程买单，例如下面一个Vue的例子：</p>
+<pre><code>// 同步任务1
+this.content = 1;
+// 同步任务2
+this.content = 2;
+// 同步任务3
+this.content = 3;
+</code></pre>
+
+<p>试想一下，如果Vue不是异步更新的话，会出现三次修改dom情况，但是本质上只有最后一次的修改是有意义，这样就白白浪费了两次修改。但是如果使用异步更新的话它们会先在JS层面上被批量完成，当渲染时仅仅需要针对有意义的计算结果去操作dom一次。<br/></p>
+<p>$nextTick大家应该都很熟悉，Vue内部实现这个方法用来进行异步更新。我们一起来看一个例子：</p>
+<pre><code>// html
+&lt;ul&gt;
+    &lt;li v-for=&quot;(item, index) in list&quot; :key=&quot;index&quot; class=&quot;fd-list-item&quot;&gt;{{item}}&lt;/li&gt;
+    &lt;button @click=&quot;addClickHandler&quot;&gt;&lt;/button&gt;
+&lt;/ul&gt;
+// js
+{
+    data () {
+        return {
+            ...
+            list: [1, 2, 3, 4, 5]
+        };
+    },
+    methods: {
+        addClickHandler () {
+            this.list.push(this.list.length + 1);
+            this.$nextTick(() =&gt; {
+                console.log(document.querySelectorAll('.fd-list-item'))
+            })
+        }
+    }
+}
+</code></pre>
+
+<blockquote>
+<p>Vue异步更新的模拟实现-nextTick</p>
+</blockquote>
+<pre><code>function nextTick(cb, ctx) {
+    let _resolve
+    callbacks.push(() =&gt; {
+        if (cb) {
+            cb.call(ctx);
+        } else if (_resolve) {
+            _resolve(ctx)
+        }
+    })
+    if (!pending) {
+        microTimerFunc()
+    }
+    if (!cb) {
+        return new Promise(resolve =&gt; {
+            _resolve = resolve;
+        })
+    }
+}
+
+function microTimeFunc() {
+    const p = Promise.resolve();
+    return () =&gt; {
+        p.then(flushCallbacks)
+    }
+}
+
+function flushCallbacks() {
+    pending = false;
+    const copies = callbacks.slice(0);
+    callbacks.length = 0;
+    copies.forEach(fn =&gt; {
+        fn()
+    })
+}
+</code></pre>
+
+<h4>优化DOM：减少回流和重绘</h4>
+<p>重绘比较好识别比如修改DOM的样式信息例如文字颜色、背景颜色、可见性(这里指的是visibility属性)。这里想重点说一下哪些操作会触发回流</p>
+<blockquote>
+<p>回流操作</p>
+</blockquote>
+<ul>
+<li>
+改变DOM的几何属性：当一个元素的几何属性改变时会它相关的节点(比如父子节点、兄弟节点)的几何属性都需要重新计算。常见的几何属性有：
+<ul>
+<li>width</li>
+<li>height</li>
+<li>margin</li>
+<li>padding</li>
+<li>left</li>
+<li>top</li>
+<li>border</li>
+</ul>
+</li>
+<li>改变DOM树结构：增加、删除、移动节点</li>
+<li>
+获取特定属性值：在平常开发中我们可能会使用如下属性：
+<ul>
+<li>offset</li>
+<li>scroll</li>
+<li>client
+这些属性值有一个共性就是<code>即时性</code>,当每次获取时，浏览器都会进行回流</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>如何减少回流和重绘</p>
+</blockquote>
+<ul>
+<li>
+<p>避免频繁改动</p>
+<p>const dom = document.getElementById('fd-wrap');
+for (let i = 0; i &lt; 10; i++) {
+    el.style.top = <code>${el.offsetTop + 10}px</code>;
+}</p>
+</li>
+</ul>
+<p>优化：可以使用js变量将值缓存起来</p>
+<pre><code>const dom = document.getElementById('fd-wrap');
+let offsetTop = dom.offsetTop;
+for(let i = 0; i &lt; 10; i++) {
+    offsetTop += 10;
+}
+dom.style.top = `${offsetTop}px`;
+</code></pre>
+
+<ul>
+<li>
+<p>避免逐条修改样式</p>
+<p>const container = document.getElementById('jsContainer')
+container.style.width = '100px'
+container.style.height = '200px'
+container.style.border = '10px solid red'
+container.style.color = 'red'</p>
+</li>
+</ul>
+<p>优化：增加类名，在css中编写相应的样式</p>
+<pre><code>// css
+.fd-container {
+    width: 100px;
+    height: 200px;
+    border: 10px solid red;
+    color: red;
+}
+// js
+const container = document.getElementById('jsContainer');
+container.classList.add('fd-container');
+</code></pre>
+
+<ul>
+<li>将DOM“离线”</li>
+</ul>
+<p>DOM离线就是将在修改DOM之前先设置display: none,相当于把DOM元素从页面上拿掉了，后续对该DOM的操作就不会触发回流和重绘。例如：</p>
+<pre><code>const container = document.getElementById('jsContainer');
+container.style.display = 'none';
+container.style.width = '100px'
+container.style.height = '200px'
+container.style.border = '10px solid red'
+container.style.color = 'red'
+container.style.display = 'block'
+</code></pre>
+
+<p>这样中间我们不管操作多少次该DOM，最终我们只会触发两次回流</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
